@@ -1,0 +1,57 @@
+name: Build firmware
+on:
+  push:
+
+jobs:
+  build-openwrt:
+    runs-on: ubuntu-latest-4core
+    steps:
+      - uses: actions/checkout@v4
+ 
+      - name: Install required packages
+        run: |
+          sudo apt install -y \
+            bison \
+            build-essential \
+            clang \
+            flex \
+            g++ \
+            gawk \
+            gcc-multilib \
+            g++-multilib \
+            gettext \
+            git \
+            libncurses-dev \
+            libssl-dev \
+            python3-distutils \
+            rsync \
+            unzip \
+            zlib1g-dev \
+            file \
+            wget
+
+      - uses: actions/checkout@v4
+        with:
+          repository: 'openwrt/openwrt'
+          ref: 'v23.05.2'
+          path: openwrt
+
+      - name: Patch
+        run: |
+          wget https://patch-diff.githubusercontent.com/raw/openwrt/openwrt/pull/3661.patch
+          patch -p1 < 3661.patch
+          sed -i '47a \	elecom,wab-i1750-ps|\\' ./target/linux/ath79/generic/base-files/etc/hotplug.d/firmware/10-ath9k-eeprom
+          sed -i '75a \	elecom,wab-i1750-ps|\\' ./target/linux/ath79/generic/base-files/etc/hotplug.d/firmware/11-ath10k-caldata
+        working-directory: openwrt
+
+      - name: Install feeds
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+        working-directory: openwrt
+
+      - name: Build OpenWrt
+        run: |
+          cp $GITHUB_WORKSPACE/.config .
+          make -j$(nproc)
+        working-directory: openwrt
