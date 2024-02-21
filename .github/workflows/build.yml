@@ -37,6 +37,7 @@ jobs:
           path: openwrt
 
       - name: Patch
+        continue-on-error: true
         run: |
           wget https://patch-diff.githubusercontent.com/raw/openwrt/openwrt/pull/3661.patch
           patch -p1 < 3661.patch
