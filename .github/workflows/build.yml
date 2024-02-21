@@ -4,7 +4,7 @@ on:
 
 jobs:
   build-openwrt:
-    runs-on: ubuntu-latest-4-cores
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
  
