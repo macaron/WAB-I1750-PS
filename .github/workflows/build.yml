@@ -56,3 +56,8 @@ jobs:
           cp $GITHUB_WORKSPACE/.config .
           make -j$(nproc)
         working-directory: openwrt
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          path: openwrt/bin/targets/ath79/generic
