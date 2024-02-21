@@ -1,6 +1,7 @@
 name: Build firmware
 on:
   push:
+    branches: [ 'main' ]
 
 jobs:
   build-openwrt:
@@ -57,7 +58,17 @@ jobs:
           make -j$(nproc)
         working-directory: openwrt
 
-      - name: Upload firmware
-        uses: actions/upload-artifact@v4
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          path: openwrt/bin/targets/ath79/generic
+          body_path: openwrt/bin/targets/ath79/generic/sha256sums
+          files: |
+            openwrt/bin/targets/ath79/generic/config.buildinfo
+            openwrt/bin/targets/ath79/generic/feeds.buildinfo
+            openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-elecom_wab-i1750-ps-initramfs-kernel.bin
+            openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-elecom_wab-i1750-ps-squashfs-factory.bin
+            openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-elecom_wab-i1750-ps-squashfs-sysupgrade.bin
+            openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-elecom_wab-i1750-ps.manifest
+            openwrt/bin/targets/ath79/generic/profiles.json
+            openwrt/bin/targets/ath79/generic/sha256sums
+            openwrt/bin/targets/ath79/generic/version.buildinfo
