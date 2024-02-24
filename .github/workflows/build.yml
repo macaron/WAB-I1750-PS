@@ -58,10 +58,34 @@ jobs:
           make -j$(nproc)
         working-directory: openwrt
 
+      - name: Upload build result
+        uses: actions/upload-artifact@v4
+        with:
+          name: openwrt-ath79-generic-elecom_wab-i1750-ps
+          path: |
+            openwrt/bin/targets/ath79/generic/config.buildinfo
+            openwrt/bin/targets/ath79/generic/feeds.buildinfo
+            openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-elecom_wab-i1750-ps-initramfs-kernel.bin
+            openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-elecom_wab-i1750-ps-squashfs-factory.bin
+            openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-elecom_wab-i1750-ps-squashfs-sysupgrade.bin
+            openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-elecom_wab-i1750-ps.manifest
+            openwrt/bin/targets/ath79/generic/profiles.json
+            openwrt/bin/targets/ath79/generic/sha256sums
+            openwrt/bin/targets/ath79/generic/version.buildinfo
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: "minor"
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
           body_path: openwrt/bin/targets/ath79/generic/sha256sums
+          prerelease: true
           files: |
             openwrt/bin/targets/ath79/generic/config.buildinfo
             openwrt/bin/targets/ath79/generic/feeds.buildinfo
