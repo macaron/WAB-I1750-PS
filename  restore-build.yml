@@ -13,6 +13,7 @@ jobs:
         run: |
           curl -O https://dl.elecom.co.jp/support/download/network/wireless_lan/ap/wab-i1750-ps/WAB-I1750-PS-FW-V1-5-10.zip
           unzip WAB-I1750-PS-FW-V1-5-10.zip
+          mv WAB-I1750-PS-FW-V1-5-10/WAB-I1750-PS-FW-V1-5-10.bin .
 
       - name: Remove the first 128 bytes.
         run: dd if=WAB-I1750-PS-FW-V1-5-10.bin of=WAB-I1750-PS-FW-V1-5-10.bin.enc bs=1 skip=128
