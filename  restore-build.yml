@@ -1,0 +1,30 @@
+name: Build genuine firmware
+on:
+  push:
+    # branches: [ 'main' ]
+
+jobs:
+  build-openwrt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+ 
+      - name: Download encrypted firmware from elecom support
+        run: |
+          curl -O https://dl.elecom.co.jp/support/download/network/wireless_lan/ap/wab-i1750-ps/WAB-I1750-PS-FW-V1-5-10.zip
+          unzip WAB-I1750-PS-FW-V1-5-10.zip
+
+      - name: Remove the first 128 bytes.
+        run: dd if=WAB-I1750-PS-FW-V1-5-10.bin of=WAB-I1750-PS-FW-V1-5-10.bin.enc bs=1 skip=128
+
+      - name: Decrypt binary file
+        run: python3 decrypt.py WAB-I1750-PS-uboot-V1.0.2.bin.enc 8844a2d168b45a2d dec.bin
+
+      - run: file dec.bin
+
+      - name: Upload build result
+        uses: actions/upload-artifact@v4
+        with:
+          name: restore-genuine-firmware
+          path: |
+            dec.bin
