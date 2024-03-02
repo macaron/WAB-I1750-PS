@@ -8,7 +8,7 @@ Use at your own risk. I take no responsibility if your device explodes.
 
 <img width="971" alt="" src="https://github.com/macaron/WAB-I1750-PS/assets/19354702/bf99cd71-5b5f-4986-9f78-44377fb2b3d2">
 
-## Release binary
+## Download OpenWrt binary
 
 https://github.com/macaron/WAB-I1750-PS/releases
 
@@ -28,17 +28,18 @@ docker run --rm -it -v$(pwd)/.config:/openwrt/.config rtlsdr/wab-l1750-ps make m
 docker run --rm -t -v$(pwd)/.config:/openwrt/.config -v$(pwd):/openwrt/bin rtlsdr/wab-l1750-ps
 ```
 
-## Restore genuine firmware
+## Restore official firmware
 
 - Download latest firmware from elecom support https://www.elecom.co.jp/support/download/network/wireless_lan/ap/wab-i1750-ps/
 - `dd if=WAB-I1750-PS-FW-V1-5-10.bin of=WAB-I1750-PS-FW-V1-5-10.bin.enc bs=1 skip=128`
 - Run decrypt.py
   - e.g. `python3 decrypt.py WAB-I1750-PS-FW-V1-5-10.bin.enc 8844a2d168b45a2d dec.bin`
+- Confirm that the firmware is not corrupted using the "file" command.
+  - `u-boot legacy uImage, Linux Kernel Image, Linux/MIPS, OS Kernel Image (lzma), 6394657 bytes, Mon Dec 28 01:40:56 2020, Load Address: 0X80002000, Entry Point: 0X802C2E90, Header CRC: 0XF8E45FC3, Data CRC: 0X2FDEDA29`
 - Upload dec.bin http://192.168.1.1/cgi-bin/luci/admin/system/flash
+  - :warning: **Do not turn off the power while the red LED is blinking.**
 - Poweroff
 - Go 192.168.3.1 ID:admin PW:admin, Don't forget change your machine ip address.(In my case, 192.168.3.2/24)
-- Execute file command for check binary corruption.
-  - `u-boot legacy uImage, Linux Kernel Image, Linux/MIPS, OS Kernel Image (lzma), 6394657 bytes, Mon Dec 28 01:40:56 2020, Load Address: 0X80002000, Entry Point: 0X802C2E90, Header CRC: 0XF8E45FC3, Data CRC: 0X2FDEDA29`
 
 ## Thanks
 
