@@ -24,7 +24,8 @@ docker run --rm -t -v$(pwd):/openwrt/bin rtlsdr/wab-i1750-ps
 
 ```bash
 git clone https://github.com/macaron/WAB-I1750-PS && cd WAB-I1750-PS
-docker run --rm -it -v$(pwd)/.config:/openwrt/.config rtlsdr/wab-i1750-ps make menuconfig
+docker run --name builder -it rtlsdr/wab-i1750-ps make menuconfig
+docker cp builder:/openwrt/.config . && docker rm builder
 docker run --rm -t -v$(pwd)/.config:/openwrt/.config -v$(pwd):/openwrt/bin rtlsdr/wab-i1750-ps
 ```
 
