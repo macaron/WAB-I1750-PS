@@ -1,7 +1,7 @@
 name: Build firmware
 on:
   push:
-    # branches: [ 'main' ]
+    branches: [ 'main' ]
 
 jobs:
   build-openwrt:

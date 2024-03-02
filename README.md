@@ -17,7 +17,7 @@ https://github.com/macaron/WAB-I1750-PS/releases
 ### Quick build (Docker required)
 
 ```bash
-docker run --rm -t -v$(pwd):/openwrt/bin rtlsdr/wab-l1750-ps:1.0.0
+docker run --rm -t -v$(pwd):/openwrt/bin rtlsdr/wab-l1750-ps
 ```
 
 ### Customize config
@@ -25,7 +25,7 @@ docker run --rm -t -v$(pwd):/openwrt/bin rtlsdr/wab-l1750-ps:1.0.0
 ```bash
 git clone https://github.com/macaron/WAB-I1750-PS && cd WAB-I1750-PS
 docker run --rm -it -v$(pwd)/.config:/openwrt/.config rtlsdr/wab-l1750-ps make menuconfig
-docker run --rm -t -v$(pwd)/.config:/openwrt/.config -v$(pwd):/openwrt/bin rtlsdr/wab-l1750-ps:1.0.0
+docker run --rm -t -v$(pwd)/.config:/openwrt/.config -v$(pwd):/openwrt/bin rtlsdr/wab-l1750-ps
 ```
 
 ## Restore genuine firmware
