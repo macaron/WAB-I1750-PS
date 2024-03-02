@@ -24,7 +24,8 @@ RUN apt update && apt install -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/
 
-RUN git clone -b devadd/wab https://github.com/musashino205/openwrt . \
+RUN git clone https://github.com/openwrt/openwrt . \
+  && git checkout b18edb1bfa34420fde1404d9d1e619c889557154 \
   && ./scripts/feeds update -a \
   && ./scripts/feeds install -a \
   && groupadd -g 1100 elecombuilder \
