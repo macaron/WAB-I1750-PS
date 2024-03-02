@@ -65,6 +65,7 @@ jobs:
             openwrt/bin/targets/ath79/generic/version.buildinfo
 
       - name: Bump version and push tag
+        if: github.ref == 'refs/heads/main'
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
@@ -72,6 +73,7 @@ jobs:
           default_bump: "minor"
 
       - name: Release
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
